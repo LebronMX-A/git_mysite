@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ blog.title }}
+{% endblock %}
+
+{% load staticfiles %}
+{% load likes_tags %}
+{% load comment_tags %}{# 加载指自定义模板 #}
+
+{% block header_extends %}
+    <link rel="stylesheet" href="{%static 'blog.css'%}">
+{% endblock %}
+
+{% block activate_blog %}
+       active
+{% endblock %}
+{#页面内容#}
+{% block content %}
+<div class="container" style="margin-top: 80px;">
+    <div class="row">
+        <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">{% block blog_list_title %}博客列表{% endblock %}</div>
+                {#展示每一篇文章的信息#}
+                 <div class="panel-body">
+                     {% for blog in pages_of_blog.object_list %}
+                         <div class="blog">
+                         <h3><a href="{% url 'blog_detail' blog.pk %}">{{ blog.title }}</a></h3>
+                         <p class="blog-info">
+                         <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+                             <a href="{% url 'blog_with_type' blog.blog_type.pk %}">{{ blog.blog_type }}</a>
+                          <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                            {#图标bootstarp#}
+                             {{ blog.create_time|date:"Y-m-d "}}
+                             阅读({{ blog.get_read_num }})
+                             评论({% get_comment_count blog%})
+                             点赞({% get_likes_count blog %})
+
+                         </p>
+                         <p>{% autoescape off %}{{ blog.content|truncatechars:300}}{% endautoescape %}</p>{# striptags过滤掉html标签的内容，使用了ckeditor之后，在前端展示只有文字，没有html代码#}
+{#                         {% autoescape off %}{{post.content}}{% endautoescape %}过滤html代码，并且能应用到富文本编辑器#}
+                         </div>
+
+                    {% endfor %}
+                 </div>
+        </div>
+        {% block paginator %}
+        <div class="paginator">
+            <ul class="pagination">
+                {#通过booetsarp来美化前端的分页#}
+            <li>
+            {# 上一页 #}
+            {% if pages_of_blog.has_previous %}
+                <a href=/blog/?page={{ pages_of_blog.previous_page_number }} aria-label="Previous">
+                    <span aria-hidden="true">上一页</span>
+                </a>
+            {% else %}
+                  <span aria-hidden="true">上一页</span>
+            {% endif %}
+            {# 全部页码 #}
+            </li>
+                {% for page_num in page_range %}
+                    {#通过pages_of_blog中的属性paginator.page_range获得分页的数#}
+                    {% if page_num == pages_of_blog.number %}
+                    {#通过判断是否在当前页面判断那个页面显示高亮 ，pagintor中的number属性来获取当前的页面#}
+                        <li class="active"><a href="/blog/?page={{ page_num }}">{{ page_num }}</a></li>
+                    {%else%}
+                        <li><a href="/blog/?page={{ page_num }}">{{ page_num }}</a></li>
+                    {% endif %}
+
+                {% endfor %}
+            <li>
+            {# 下一页 #}
+            {% if pages_of_blog.has_next %}
+                <a href=/blog/?page={{ pages_of_blog.next_page_number }} aria-label="Next">
+                    <span aria-hidden="true">下一页</span>
+                </a>
+            {% else %}
+                  <span aria-hidden="true">下一页</span>
+            {% endif %}
+            </li>
+            </ul>
+        <p>  共有{{ pages_of_blog.paginator.count}}篇博客
+        当前在第{{pages_of_blog.number}}页
+        共有{{pages_of_blog.paginator.num_pages}}页
+        </p>
+        </div>
+        </div>
+        {% endblock %}
+
+         <div class="col-md-4">
+         <div class="panel panel-default">
+         <div class="panel-heading">博客分类</div>
+         <div class="panel-body">
+           <ul>
+          {% for blog_type in blog_types %}
+              <li><a href="{% url 'blog_with_type' blog_type.pk %}">{{ blog_type.type_name }}({{ blog_type.blog_count }})</a></li>
+          {% empty %}
+              <li>暂无分类</li>
+          {% endfor %}
+           </ul>
+        </div>
+        </div>
+        <div class="panel panel-default">                    {#            bootstarp自带的控制面板#}
+             <div class="panel-heading">日期归档</div>  {#            面板的标题#}
+              <div class="panel-body">                 {#            面板的内容#}
+                  <ul>
+                      {% for blog_date ,blog_count in blog_dates.items%}{# items可以用for循环遍历字典#}
+                          <li>
+                              <a href="{% url 'blog_with_date' blog_date.year blog_date.month %}">
+                                  {{ blog_date|date:"Y年m月 "}}({{ blog_count }})
+                              </a>
+                          </li>
+                      {% endfor %}
+                  </ul>
+              </div>
+        </div>
+        </div>
+
+</div>
+</div>
+{%  endblock %}

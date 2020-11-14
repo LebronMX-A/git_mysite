@@ -1,0 +1,30 @@
+.panel-body ul{
+    list-style: none;
+}
+
+div.blog:not(:last-child)
+/*    对最后一个元素不执行*/
+{
+    margin-bottom: 2em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid #eeeeee;
+}
+div.blog h3
+{
+   margin-top: 0.2em;
+}
+
+div.blog p.blog-info
+{
+    margin-bottom: 0;
+}
+
+ul.blog_info_description
+{
+    list-style-type: none;
+}
+
+ul.line.blog_info_description
+{
+    display: inline-block;
+}

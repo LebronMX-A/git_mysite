@@ -1,0 +1,23 @@
+h3.home-content{
+    font-size: 222%;
+    text-align:center;
+    margin-top:4em;
+    margin-bottom:2em;
+        /*position: absolute;*/
+        /*left: 50%;*/
+        /*top: 50%;*/
+        /*transform: translate(-50%,-50%);<!--使段落左右居中，上下居中 -->*/
+}
+div #container{
+
+ width: 600px; height:400px;
+    margin: 0 auto;
+    mid-width:20em;
+    max-width:40em;
+
+}
+
+div.hot-data{
+    text-align: center;
+    margin-top: 2em;
+}

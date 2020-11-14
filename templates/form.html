@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+   <meta charset="utf-8">
+{% block title %}
+   {{ page_title }}
+{% endblock %}
+
+{% block header_extends %}
+
+{% endblock %}
+
+{% block activate_first__page %}
+       active
+{% endblock %}
+
+{% block content %}
+
+<h1 style="margin-top: 3em"></h1>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-5 col-xs-offset-3">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">{{form_title}}</h3>
+              </div>
+              <div class="panel-body">
+                <form action="" method="POST" >
+                {% csrf_token %}
+                {% for field  in form %}
+                   {% if not field.is_hidden %}
+                       <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                   {% endif %}
+                    {{ field }}
+                    <p class="text-danger">{{ field.errors.as_text }}</p>{#在登录显示出错误，账号密码的错误#}
+                {% endfor %}
+                <span id="tip" class=" text-danger">{{ form.non_field_errors }}</span>
+                <div class="clearfix"></div>
+                <div class="pull-left">
+                    {% block other_buttons %}{% endblock %}
+                </div>
+                <div class="pull-right">
+                      <input type="submit" value="{{submit_text}}" class="btn btn-primary pull-right">
+                      <button class="btn btn-default" onclick="window.location.href='{{return_back_url}}'">返回</button>
+                </div>
+                </form>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%  endblock %}

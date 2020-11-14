@@ -1,0 +1,30 @@
+*{
+margin: 0;
+padding:0;
+}
+ul
+{
+    list-style-type: none;
+}
+ul.navbar-right
+{
+    margin-right: 0;
+}
+
+/*
+    div.nav{
+        background: #eeeeee;
+        border-bottom: 1px solid #cccccc;
+        text-align: center;
+
+    }
+    div.nav a{
+        text-decoration: none;<!--设置超链接的下划线消失 -->
+        color:aquamarine;
+        padding: 5px 10px;
+    }
+    div.nav  a.logo{
+        display:inline-block;
+        font-size: 120%;
+    }
+*/
